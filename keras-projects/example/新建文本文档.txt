@@ -1,0 +1,15 @@
+#-*-coding:utf-8-*-
+#!/usr/bin/python2.7
+from keras.models import Sequential
+from keras.layers import Dense, Activation
+from keras import backend as K
+model = Sequential()
+# Stacking layer is as easy as .add()
+model.add(Dense(32,input_shape = (500,)))
+model.add(Dense(10,activation = 'softmax'))
+
+# Configure its learning process with  .compile()
+model.compile(loss = 'categorical_crossentropy',optimizer = 'sgd', metrics = ['accuracy'])
+
+# model.compile(loss 
+model.fit(train['data'],train['label'],batch_size = 32, epochs = 10,verbose = 1)

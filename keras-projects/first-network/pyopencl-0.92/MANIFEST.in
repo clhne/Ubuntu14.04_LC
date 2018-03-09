@@ -1,0 +1,16 @@
+include src/wrapper/*.hpp
+include src/wrapper/*.cpp
+include test/*.py
+include examples/*.py
+include doc/source/*.rst
+include doc/Makefile
+include doc/*.py
+include doc/source/conf.py
+
+include distribute_setup.py
+include configure.py
+include Makefile.in
+include aksetup_helper.py
+include README_SETUP.txt
+
+recursive-include bpl-subset *.h *.hpp *.cpp *.html *.inl *.ipp *.pl *.txt

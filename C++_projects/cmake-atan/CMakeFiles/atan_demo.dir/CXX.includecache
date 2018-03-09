@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lcl/Desktop/projects/C++_projects/cmake-atan/atan_demo.cpp
+iostream
+-
+stdlib.h
+-
+stdio.h
+-
+math.h
+-
+errno.h
+-
+

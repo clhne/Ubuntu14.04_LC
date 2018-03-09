@@ -1,0 +1,3 @@
+/home/lcl/Desktop/projects/C++_projects/cmake-projects/CMakeFiles/rebuild_cache.dir
+/home/lcl/Desktop/projects/C++_projects/cmake-projects/CMakeFiles/edit_cache.dir
+/home/lcl/Desktop/projects/C++_projects/cmake-projects/CMakeFiles/main.dir
