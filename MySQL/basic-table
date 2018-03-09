@@ -1,0 +1,16 @@
+show databases;
+show tables;
+insert into lcl(name) value("Go for it.");
+delete from lcl where id=10;
+commit;
+select * from lcl;
+
+create table ad(id int auto_increment primary key, 
+address varchar(20) not null)character set=utf8;
+insert into ad(address) value("明月路1258号");
+insert into ad(address) value("大唐上海产业园");
+
+insert into ad(address) value("明月路1259号");
+insert into ad(address) value("金桥现代产业服务园区");
+delete from ad where id=2 or id=3 or id=4;
+select * from ad;
