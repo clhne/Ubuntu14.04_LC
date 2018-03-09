@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/vecadd.dir/vecadd.o  -o vecadd -rdynamic 

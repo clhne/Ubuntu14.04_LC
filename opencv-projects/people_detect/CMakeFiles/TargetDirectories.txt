@@ -1,0 +1,1 @@
+/home/luchenglin/opencv/people_detect/CMakeFiles/peopledetect.dir

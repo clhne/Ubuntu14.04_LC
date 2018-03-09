@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/sinewave.dir/sinewave.o  -o sinewave -rdynamic 

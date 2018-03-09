@@ -1,0 +1,102 @@
+Beignet Compiler
+================
+
+This code base contains the compiler part of the Beignet OpenCL stack. The
+compiler is responsible to take a OpenCL language string and to compile it into
+a binary that can be executed on Intel integrated GPUs.
+
+Status
+------
+
+After two years development, beignet is mature now. It now supports all the
+OpenCL 1.2 mandatory features. Beignet gets almost 100% pass rate with both
+the OpenCV 3.0 test suite and the piglit opencl test suite. There are some 
+performance tuning related items remained, see [[here|Backend/TODO]] for an
+(incomplete) list of things to do.
+
+Interface with the run-time
+---------------------------
+
+Even if the compiler makes a very liberal use of C++ (templates, variadic
+templates, macros), we really tried hard to make a very simple interface with
+the run-time. The interface is therefore a pure C99 interface and it is defined
+in `src/backend/program.h`.
+
+The goal is to hide the complexity of the inner data structures and to enable
+simple run-time implementation using straightforward C99.
+
+Note that the data structures are fully opaque: this allows us to use both the
+C++ simulator or the real Gen program in a relatively non-intrusive way.
+
+Various environment variables
+-----------------------------
+
+Environment variables are used all over the code. Most important ones are:
+
+- `OCL_STRICT_CONFORMANCE` `(0 or 1)`. Gen does not provide native high
+  precision math instructions compliant with OpenCL Spec. So we provide a
+  software version to meet the high precision requirement. Obviously the
+  software version's performance is not as good as native version supported by
+  GEN hardware.
+
+- `OCL_SIMD_WIDTH` `(8 or 16)`. Select the number of lanes per hardware thread,
+  Normally, you don't need to set it, we will select suitable simd width for
+  a given kernel. Default value is 16.
+
+- `OCL_OUTPUT_KENERL_SOURCE` `(0 or 1)`. Output the building or compiling kernel's
+  source code.
+
+- `OCL_OUTPUT_GEN_IR` `(0 or 1)`. Output Gen IR (scalar intermediate
+  representation) code
+
+- `OCL_OUTPUT_LLVM_BEFORE_LINK` `(0 or 1)`. Output LLVM code before llvm link
+
+- `OCL_OUTPUT_LLVM_AFTER_LINK` `(0 or 1)`. Output LLVM code after llvm link
+
+- `OCL_OUTPUT_LLVM_AFTER_GEN` `(0 or 1)`. Output LLVM code after the lowering
+  passes, Gen IR is generated based on it.
+
+- `OCL_OUTPUT_ASM` `(0 or 1)`. Output Gen ISA
+
+- `OCL_OUTPUT_REG_ALLOC` `(0 or 1)`. Output Gen register allocations, including
+  virtual register to physical register mapping, live ranges.
+
+- `OCL_OUTPUT_BUILD_LOG` `(0 or 1)`. Output error messages if there are any
+  during CL kernel compiling and linking.
+
+- `OCL_OUTPUT_CFG` `(0 or 1)`. Output control flow graph in .dot file.
+
+- `OCL_OUTPUT_CFG_ONLY` `(0 or 1)`. Output control flow graph in .dot file,
+  but without instructions in each BasicBlock.
+
+- `OCL_PRE_ALLOC_INSN_SCHEDULE` `(0 or 1)`. The instruction scheduler in
+  beignet is currently split into two passes: before and after register
+  allocation. The pre-alloc scheduler tends to decrease register pressure.
+  This variable is used to disable/enable pre-alloc scheduler. This pass is
+  disabled now for some bugs.
+
+- `OCL_POST_ALLOC_INSN_SCHEDULE` `(0 or 1)`. Disable/enable post-alloc
+  instruction scheduler. The post-alloc scheduler tends to reduce instruction
+  latency. By default, this is enabled now.
+
+- `OCL_SIMD16_SPILL_THRESHOLD` `(0 to 256)`. Tune how many registers can be
+  spilled under SIMD16. Default value is 16. We find spilling too many registers
+  under SIMD16 is not as good as falling back to SIMD8 mode. So we set the
+  variable to control spilled register number under SIMD16.
+
+- `OCL_USE_PCH` `(0 or 1)`. The default value is 1. If it is enabled, we use
+  a pre compiled header file which includes all basic ocl headers. This would
+  reduce the compile time.
+
+Implementation details
+----------------------
+
+Several key decisions may use the hardware in an usual way. See the following
+documents for the technical details about the compiler implementation:
+
+- [[Mixed buffer pointer)|mixed_buffer_pointer]] 
+- [[Unstructured branches|unstructured_branches]]
+- [[Scalar intermediate representation|gen_ir]]
+- [[Clean backend implementation|compiler_backend]]
+
+Ben Segovia.

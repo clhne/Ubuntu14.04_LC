@@ -1,0 +1,129 @@
+Cross Compiler HowTo
+====================
+
+Beignet supports both PC devices with full profile and embedded/handheld
+devices with embedded profile. This document describes how to build Beignet
+and OpenCL kernels for a target machine (embedded/handheld devices) in a
+host machine with the help of cross compiler, and also the large-size-reduced
+Beignet driver package for the target machine.
+
+Key part of yocto receipt is shown as an example.
+
+Build Beignet with a cross compiler
+-----------------------------------
+
+Besides the general cross compile methods, reference the following options when
+configure Beignet with cmake.
+
+- LLVM_INSTALL_DIR
+  Beignet depends on llvm+clang, this option refers to the path of llvm-config,
+  llvm-as, llvm-link and clang in the cross compiler environment.
+
+  Please ensure that llvm-config, llvm-as, llvm-link and clang are in the same
+  directory. Please also make sure 'your_llvm_install_dir/llvm-config --libdir'
+  and 'your_llvm_install_dir/llvm-config --includedir' print the right output.
+
+- CMAKE_SKIP_RPATH
+  Some cross compiler systems forbid the usage of rpath in binaries/libraries,
+  set this option to be TRUE.
+
+- GEN_PCI_ID
+  It is the GPU pci_id of the target machine, for example, 0x0162 is the pciid
+  of Intel Ivybridge GPU, and 0x0f31 is Intel Baytrail GPU. The information can
+  be queried with command 'lspci -n'.
+
+- CMAKE_INSTALL_PREFIX and BEIGNET_INSTALL_DIR
+  These two options control the installation path.
+
+
+To build Beignet with yocto, the receipt looks like:
+
+S = "${WORKDIR}/git"
+BEIGNET_BUILD_DIR = "${S}/build"
+do_configure() {
+    mkdir -p ${BEIGNET_BUILD_DIR}
+    cd ${BEIGNET_BUILD_DIR}
+    cmake \
+        .. \
+        -DLLVM_INSTALL_DIR=${TMPDIR}/sysroots/baytraili/usr/bin/ \
+        -DCMAKE_INSTALL_PREFIX=/usr/ \
+        -DBEIGNET_INSTALL_DIR=/usr/lib/ \
+        -DCMAKE_SKIP_RPATH=TRUE \
+        -DGEN_PCI_ID=0x0f31
+}
+do_compile() {
+    cd ${BEIGNET_BUILD_DIR}
+    oe_runmake
+}
+
+
+Distribution of large-size-reduced Beignet driver package
+---------------------------------------------------------
+
+On embedded/handheld devices, storage and memory are scarce, it is necessary to
+provide only the OpenCL runtime library without OpenCL compiler, and only the
+executable binary kernel is supported on such devices.
+
+It means that just distribute libcl.so and libgbeinterp.so (~320k in total after strip)
+are enough for OpenCL embedded profile in the target machine. The whole Beignet
+driver set can be separated into several packages for different usage.
+
+
+Take yocto as an example, the receipt looks like:
+SYSROOT_PREPROCESS_FUNCS += "beignet_sysroot_preprocess"
+beignet_sysroot_preprocess() {
+    install -d ${SYSROOT_DESTDIR}${bindir}
+    install -m 0755 ${BEIGNET_BUILD_DIR}/backend/src/gbe_bin_generater ${SYSROOT_DESTDIR}${bindir}
+}
+do_install() {
+    cd ${BEIGNET_BUILD_DIR}
+    oe_runmake DESTDIR=${D} install
+
+    #install OpenCL offline compiler
+    install -d ${D}${bindir}
+    install -m 0755 ${BEIGNET_BUILD_DIR}/backend/src/gbe_bin_generater ${D}${bindir}
+
+    #install utest
+    install -d ${D}${bindir}/beignet
+    install -d ${D}${bindir}/beignet/include
+    install -m 0755 ${BEIGNET_BUILD_DIR}/utests/utest_run ${D}${bindir}/beignet
+    install -m 0755 ${S}/setenv.sh ${D}${bindir}/beignet
+    install -m 0644 ${S}/kernels/*.cl ${D}${bindir}/beignet
+    install -m 0644 ${S}/kernels/*.bmp ${D}${bindir}/beignet
+    install -m 0644 ${S}/kernels/compiler_ceil.bin ${D}${bindir}/beignet
+    install -m 0644 ${S}/kernels/runtime_compile_link.h ${D}${bindir}/beignet
+    install -m 0644 ${S}/kernels/include/runtime_compile_link_inc.h ${D}${bindir}/beignet/include/runtime_compile_link_inc.h
+    install -d ${D}${libdir}
+    install -m 0644 ${BEIGNET_BUILD_DIR}/utests/libutests.so ${D}${libdir}
+}
+do_install_append() {
+    rm -rf ${D}${sysconfdir}
+}
+PACKAGES += "${PN}-compiler ${PN}-test"
+FILES_${PN} = "${libdir}/libcl.so ${libdir}/libgbeinterp.so"
+FILES_${PN}-compiler = "${bindir}/gbe_bin_generater ${libdir}/libgbe.so ${libdir}/beignet.bc ${libdir}/beignet.pch ${libdir}/ocl_stdlib
+.h ${libdir}/include/"
+FILES_${PN}-dev = "${includedir}/CL/"
+FILES_${PN}-test = "${bindir}/beignet/"
+FILES_${PN}-test += "${libdir}/libutests.so"
+
+
+Build OpenCL kernels with OpenCL offline compiler
+-------------------------------------------------
+
+Since the target machine does not contain the OpenCL compiler, the OpenCL source
+kernel need to be compiled with an OpenCL offline compiler (gbe_bin_generater)
+into binary kernel in the host machine, and the OpenCL application can load the
+binary kernel with function clCreateProgramWithBinary.
+
+The OpenCL offline compiler gbe_bin_generater is the result of Beignet build and
+locates at .../your_path_to_build/backend/src/gbe_bin_generater, see below for the
+command options.
+
+gbe_bin_generater INFILE [-pbuild_parameter] -oOUTFILE -tGEN_PCI_ID
+
+For example, the following command builds OpenCL source kernel from file 'mykernel.cl'
+for Ivybridge with pci_id 0x0162, and write the result (executable binary kernel)
+into file 'mykernel.bin'.
+
+gbe_bin_generater mykernel.cl -omykernel.bin -t0x0162

@@ -1,0 +1,9 @@
+/home/luchenglin/opencl/build/Chapter_6/HelloBinaryWorld/CMakeFiles/HelloBinaryWorld.dir
+/home/luchenglin/opencl/build/Chapter_2/HelloWorld/CMakeFiles/HelloWorld.dir
+/home/luchenglin/opencl/build/Chapter_3/OpenCLConvolution/CMakeFiles/OpenCLConvolutionChap3.dir
+/home/luchenglin/opencl/build/Chapter_3/OpenCLInfo/CMakeFiles/OpenCLInfo.dir
+/home/luchenglin/opencl/build/Chapter_7/SimpleBufferSubBuffer/CMakeFiles/SimpleBufferSubBuffer.dir
+/home/luchenglin/opencl/build/Chapter_14/histogram/CMakeFiles/histogram.dir
+/home/luchenglin/opencl/build/Chapter_12/Sinewave/CMakeFiles/sinewave.dir
+/home/luchenglin/opencl/build/Chapter_22/CMakeFiles/spmv.dir
+/home/luchenglin/opencl/build/Chapter_12/VectorAdd/CMakeFiles/vecadd.dir

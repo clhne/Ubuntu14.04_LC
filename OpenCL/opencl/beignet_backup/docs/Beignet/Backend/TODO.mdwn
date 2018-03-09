@@ -1,0 +1,93 @@
+TODO
+====
+
+The compiler is quite complete now in terms of functionality. It could pass
+almos all of the piglit OCL test cases and the pass rate for the OpenCV test
+suite is also quite good now. But there are plenty of things to do for the
+final performance tuning.
+
+OpenCL standard library
+-----------------------
+
+Today we define the OpenCL API in header file `src/ocl_stdlib.h`.
+
+By the way, one question remains: do we want to implement
+the high-precision functions as _inline_ functions or as external functions to
+call? Indeed, inlining all functions may lead to severe code bloats while
+calling functions will require to implement a proper ABI. We certainly want to
+do both actually.
+
+LLVM front-end
+--------------
+
+The code is defined in `src/llvm`.  We used the SPIR and the OpenCL profile
+to compile the code. Therefore, a good part of the job is already done. However,
+many things must be implemented:
+
+- From LLVM 3.3, we use SPIR IR. We need to use the compiler defined type to
+  represent sampler\_t/image2d\_t/image1d\_t/....
+
+- Considering to use libclc in our project and avoid to use the PCH which is not
+  compatible for different clang versions. And may contribute what we have done in
+  the ocl\_stdlib.h to libclc if possible.
+
+- Optimize math functions.
+
+Gen IR
+------
+
+The code is defined in `src/ir`. Main things to do are:
+
+- Support structurized while loop and self loop BBs.
+
+- Finishing the handling of function arguments (see the [[IR
+  description|gen_ir]] for more details)
+
+- Merging of independent uniform loads (and samples). This is a major
+  performance improvement once the uniform analysis is done. Basically, several
+  uniform loads may be collapsed into one load if no writes happens in-between.
+  This will obviously impact both instruction selection and the register
+  allocation.
+
+- Implement fast path for small local variables. When the kernel only defines
+  a small local array/variable, there will be a good chance to allocate the local
+  array/variable in register space rather than system memory. This will reduce a
+  lot of memory load/stroe from the system memory. After custom loop unrolling,
+  this optimization is not very important for most cases now.
+
+Backend
+-------
+
+The code is defined in `src/backend`. Main things to do are:
+
+- Optimize register spilling (see the [[compiler backend description|compiler_backend]] for more details)
+
+- Implementing proper instruction selection. A "simple" tree matching algorithm
+  should provide good results for Gen
+
+- Improving the instruction scheduling pass. Need to implement proper pre register
+  allocation scheduling to lower register pressure.
+
+- Reduce the macro instructions in gen\_context. The macro instructions added in
+  gen\_context will not get a chance to do post register allocation scheduling.
+
+- Peephole optimization. There are many chances to do further peephole optimization.
+
+- Implement a better framework to do backend instructions optimizations.
+
+General plumbing
+----------------
+
+I tried to keep the code clean, well, as far as C++ can be really clean. There
+are some header cleaning steps required though, in particular in the backend
+code.
+
+The context used in the IR code generation (see `src/ir/context.*pp`) should be
+split up and cleaned up too.
+
+I also purely and simply copied and pasted the Gen ISA disassembler from Mesa.
+This leads to code duplication. Also some messages used by OpenCL (untyped reads
+and writes) are not properly decoded yet.
+
+All of those code should be improved and cleaned up are tracked with "XXX"
+comments in the code.

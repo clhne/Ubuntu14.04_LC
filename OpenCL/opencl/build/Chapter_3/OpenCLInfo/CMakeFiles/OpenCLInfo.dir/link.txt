@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/OpenCLInfo.dir/OpenCLInfo.o  -o OpenCLInfo -rdynamic 
