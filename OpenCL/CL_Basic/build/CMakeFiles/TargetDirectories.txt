@@ -1,0 +1,3 @@
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/rebuild_cache.dir
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/edit_cache.dir
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CL-basic.dir

@@ -1,0 +1,96 @@
+Determining if the CL_VERSION_2_2 exist failed with the following output:
+Change Dir: /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f8505/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f8505.dir/build.make CMakeFiles/cmTC_f8505.dir/build
+make[1]: Entering directory `/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f8505.dir/CheckSymbolExists.c.o
+/usr/bin/cc  -I/usr/local/include   -o CMakeFiles/cmTC_f8505.dir/CheckSymbolExists.c.o   -c /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘CL_VERSION_2_2’ undeclared (first use in this function)
+   return ((int*)(&CL_VERSION_2_2))[argc];
+                   ^
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_f8505.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory `/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp'
+make: *** [cmTC_f8505/fast] Error 2
+
+File /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include </usr/local/include/CL/cl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CL_VERSION_2_2
+  return ((int*)(&CL_VERSION_2_2))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the CL_VERSION_2_1 exist failed with the following output:
+Change Dir: /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_674a5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_674a5.dir/build.make CMakeFiles/cmTC_674a5.dir/build
+make[1]: Entering directory `/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_674a5.dir/CheckSymbolExists.c.o
+/usr/bin/cc  -I/usr/local/include   -o CMakeFiles/cmTC_674a5.dir/CheckSymbolExists.c.o   -c /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘CL_VERSION_2_1’ undeclared (first use in this function)
+   return ((int*)(&CL_VERSION_2_1))[argc];
+                   ^
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_674a5.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory `/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp'
+make: *** [cmTC_674a5/fast] Error 2
+
+File /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include </usr/local/include/CL/cl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CL_VERSION_2_1
+  return ((int*)(&CL_VERSION_2_1))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the CL_VERSION_2_0 exist failed with the following output:
+Change Dir: /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_37ff5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_37ff5.dir/build.make CMakeFiles/cmTC_37ff5.dir/build
+make[1]: Entering directory `/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_37ff5.dir/CheckSymbolExists.c.o
+/usr/bin/cc  -I/usr/local/include   -o CMakeFiles/cmTC_37ff5.dir/CheckSymbolExists.c.o   -c /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘CL_VERSION_2_0’ undeclared (first use in this function)
+   return ((int*)(&CL_VERSION_2_0))[argc];
+                   ^
+/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_37ff5.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory `/home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp'
+make: *** [cmTC_37ff5/fast] Error 2
+
+File /home/lcl/Desktop/projects/opencl/CL-basic/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include </usr/local/include/CL/cl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CL_VERSION_2_0
+  return ((int*)(&CL_VERSION_2_0))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

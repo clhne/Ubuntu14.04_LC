@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wno-unused-result -O3 -DNDEBUG  -rdynamic CMakeFiles/CL-basic.dir/main.cpp.o CMakeFiles/CL-basic.dir/cl_error_util.c.o CMakeFiles/CL-basic.dir/cl_util.c.o  -o CL-basic  -L/usr/lib/x86_64-linux-gnu/libOpenCL.so -Wl,-rpath,/usr/lib/x86_64-linux-gnu/libOpenCL.so -lOpenCL 
